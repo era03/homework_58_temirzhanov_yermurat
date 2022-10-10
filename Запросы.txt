@@ -1,0 +1,4 @@
+1)
+start_date = datetime.today() - timedelta(30)
+Tasks.objects.all().filter(created_at__gt=start_date, status='2')
+2)
