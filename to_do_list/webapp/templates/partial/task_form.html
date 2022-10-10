@@ -1,0 +1,16 @@
+{% for f in form %}
+<div class="row justify-content-center">
+    <div class="col-1 mt-3">
+        <label class="form-label" for="{{ f.id_for_label }}">{{ f.label}}:</label>
+    </div>
+    <div class="col-4 mt-3">
+        <div class="row-form-errors">{{ f.errors }}</div>
+        {{ f }}
+    </div>
+</div>
+{% endfor %}
+<div class="row justify-content-center">
+    <div class="col-5 text-left">
+        <button type="submit" class="btn btn-secondary btn-sm">Create</button>
+    </div>
+</div>

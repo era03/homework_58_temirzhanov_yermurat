@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content%}
+<form action="{% url 'edit_task' task.pk%}" method="POST">
+    {% csrf_token %}
+    <div>
+        {% include 'partial/task_form.html' %}
+    </div>
+</form>
+{% endblock %}
