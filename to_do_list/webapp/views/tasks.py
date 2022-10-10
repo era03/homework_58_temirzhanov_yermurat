@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from webapp.forms import TaskForm
 from webapp.models import Tasks
 from django.views.generic import TemplateView
@@ -35,10 +35,14 @@ class TaskCreateView(TemplateView):
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         form = TaskForm(request.POST)
+        context['form'] = form
         if form.is_valid():
-            context['tasks'].create(**form.cleaned_data)
+            types = form.cleaned_data.pop('type')
+            task = form.save()
+            task.type.set(types)
+            task.save()
             return redirect('index')
-
+        return render(request, 'task_create.html', context)
 
 class TaskUpdateView(TemplateView):
     template_name = 'task_edit.html'
@@ -55,11 +59,14 @@ class TaskUpdateView(TemplateView):
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
         task = get_object_or_404(Tasks, pk=kwargs['pk'])
         form = TaskForm(request.POST, instance=task)
+        context['form'] = form
         if form.is_valid():
             task = form.save()
             return redirect('index')
+        return render(request, 'task_edit.html', context)
 
 
 class TaskDeleteView(TemplateView):

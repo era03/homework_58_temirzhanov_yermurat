@@ -20,7 +20,13 @@ Tasks
         <tr>
             <td>{{task.task}}</td>
             <td>{{task.status}}</td>
-            <td>{{task.type}}</td>
+            <td>
+                {% for type in task.type.all %}
+                    <span class="info-item">
+                        {{type.type_name}}{% if not forloop.last %}, {% endif %}
+                    </span>
+                {% endfor %}
+            </td>
             <td>{{task.created_at}}</td>
             <td>
                 <a href="{% url 'detail_task' task.pk %}">
